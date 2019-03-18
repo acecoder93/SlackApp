@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import UsernameForm from './components/UsernameForm';
+import ChatScreen from './components/ChatScreen';
 
 class App extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      currentUsername: ''
+      currentUsername: '',
+      currentScreen: 'WhatIsYourUsernameScreen'
     }
 
     this.onUsernameSubmitted = this.onUsernameSubmitted.bind(this);
@@ -23,18 +25,25 @@ class App extends Component {
     })
       .then(response =>{
         this.setState({
-          currentUsername: username
+          currentUsername: username,
+          currentScreen: 'ChatScreen'
         })
       })
       .catch(error => console.log('error', error))
   }
 
   render() {
-    return (
-      <div>
-        <UsernameForm onSubmit={this.onUsernameSubmitted} />
-      </div>
-    );
+    // Conditionally rendering screen based on this.state.currentcreen
+    // Rather than utilizing a browser Router
+
+    if (this.state.currentScreen === 'WhatIsYourUsernameScreen'){
+       return <UsernameForm onSubmit={this.onUsernameSubmitted} />
+    }
+
+    if (this.state.currentScreen === 'ChatScreen'){
+      return <ChatScreen currentUsername = {this.state.currentUSername} />
+    }
+
   }
 }
 
